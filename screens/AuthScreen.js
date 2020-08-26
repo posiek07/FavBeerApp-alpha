@@ -16,6 +16,7 @@ import {useDispatch} from 'react-redux';
 import * as authActions from '../store/actions/emailAuth';
 import {googleLogIn, googleLogout} from '../store/actions/googleAuth';
 import {facebookLogIn} from '../store/actions/facebookAuth';
+import DefaultText from '../components/DefaultText';
 
 const formReducer = (state, action) => {
   if (action.type === 'INPUT_UPDATE') {
@@ -136,6 +137,9 @@ const AuthScreen = (props) => {
                   source={require('../assets/image/authLogo.png')}
                   style={styles.logoImage}
                 />
+                <DefaultText myStyle={styles.logoText}>
+                  Brew Your Dog
+                </DefaultText>
               </View>
               <Input
                 id="email"
@@ -230,13 +234,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logoWrapper: {
-    height: 70,
-    width: 70,
+    height: 100,
+    width: 150,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  logoText: {
+    fontSize: 13,
+    fontFamily: 'Frijole-Regular',
+  },
   logoImage: {
-    width: '100%',
+    width: '80%',
     height: '100%',
   },
 });
