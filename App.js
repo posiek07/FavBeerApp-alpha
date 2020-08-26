@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {StyleSheet} from 'react-native';
-
+import codePush from 'react-native-code-push'
 import NavigationContainer from './navigation/NavigationContainer';
 
 const App = () => {
@@ -14,4 +14,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+const codePushOptions = {
+  checkFrequency: codePush.CheckFrequency.ON_APP_START
+}
+
+export default codePush(codePushOptions)(App);
