@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "312581652530",
+    "firebase_url": "https://favbeerapp.firebaseio.com",
+    "project_id": "favbeerapp",
+    "storage_bucket": "favbeerapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:312581652530:android:e3fe90d2ab3f5359d47c2b",
+        "android_client_info": {
+          "package_name": "com.favbeerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "312581652530-kc26qt2lnjj2g4bpa5s2jbt9l09cc58k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.favbeerapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "312581652530-5sporlckoqu91bteag3u57d352eitr34.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5dgHxJAkHlVPy8IcdWSuNL91U0f7v4Nc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "312581652530-5sporlckoqu91bteag3u57d352eitr34.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
