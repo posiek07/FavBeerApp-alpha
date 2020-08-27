@@ -7,11 +7,11 @@
 
 > React Native app builded with Punk API and Firebase database + Social media auth.
 
-<br/><img src="https://i.postimg.cc/2bhBVsqR/118376216-342276040291047-2290637765414475495-n.jpg" alt="118376216-342276040291047-2290637765414475495-n"/>
-<img src="https://i.postimg.cc/dLqTVSwp/118398665-937383403409057-2650895803824680231-n.jpg" alt="118398665-937383403409057-2650895803824680231-n"/>
-<img src="https://i.postimg.cc/Hj0yHCDb/118452450-311720673413632-5669819762486128846-n.jpg" alt="118452450-311720673413632-5669819762486128846-n"/>
-<img src="https://i.postimg.cc/kRCR8T8V/118472279-655087108755811-3978366759837878554-n.jpg" alt="118472279-655087108755811-3978366759837878554-n"/>
-<img src="https://i.postimg.cc/MfYMY1b9/118479664-603997900482592-2812146534712722825-n.jpg" alt="118479664-603997900482592-2812146534712722825-n"/>
+<a href="https://postimg.cc/2bhBVsqR" target="_blank"><img src="https://i.postimg.cc/2bhBVsqR/118376216-342276040291047-2290637765414475495-n.jpg" alt="118376216-342276040291047-2290637765414475495-n"/></a><br/><br/>
+<a href="https://postimg.cc/dLqTVSwp" target="_blank"><img src="https://i.postimg.cc/dLqTVSwp/118398665-937383403409057-2650895803824680231-n.jpg" alt="118398665-937383403409057-2650895803824680231-n"/></a><br/><br/>
+<a href="https://postimg.cc/Hj0yHCDb" target="_blank"><img src="https://i.postimg.cc/Hj0yHCDb/118452450-311720673413632-5669819762486128846-n.jpg" alt="118452450-311720673413632-5669819762486128846-n"/></a><br/><br/>
+<a href="https://postimg.cc/kRCR8T8V" target="_blank"><img src="https://i.postimg.cc/kRCR8T8V/118472279-655087108755811-3978366759837878554-n.jpg" alt="118472279-655087108755811-3978366759837878554-n"/></a><br/><br/>
+<a href="https://postimg.cc/MfYMY1b9" target="_blank"><img src="https://i.postimg.cc/MfYMY1b9/118479664-603997900482592-2812146534712722825-n.jpg" alt="118479664-603997900482592-2812146534712722825-n"/></a><br/><br/>
 
 ## Install
 
