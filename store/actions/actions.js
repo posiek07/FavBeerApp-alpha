@@ -109,6 +109,7 @@ export const fetchData = () => {
 
       const fetchedData = {
         beers: fetchedBeers,
+        filteredBeers: fetchedBeers,
         favRate: favRateArray ? favRateArray : [],
       };
 

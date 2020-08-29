@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "312581652530-v2rrui670prudd3cu2d6stqnkmad553q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.favbeerapp",
+            "certificate_hash": "5d9fec9cfdeb15aa7c73d8d78b96d97cc0bcab90"
+          }
+        },
+        {
           "client_id": "312581652530-kc26qt2lnjj2g4bpa5s2jbt9l09cc58k.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
