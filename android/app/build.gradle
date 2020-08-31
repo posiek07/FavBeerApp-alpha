@@ -132,8 +132,8 @@ android {
         applicationId "com.favbeerapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1.01
-        versionName "1.01"
+        versionCode 2
+        versionName "1.1"
         multiDexEnabled true
 
     }
