@@ -26,7 +26,7 @@ const BeerHeader = (props) => {
 
   return (
     <View style={styles.screen}>
-      <Text style={styles.title}>Brew Your Dog</Text>
+      <Text style={styles.title}>Choose your BrewDog</Text>
       <View
         style={{
           flex: 1,
