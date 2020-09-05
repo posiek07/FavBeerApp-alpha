@@ -31,6 +31,8 @@ import StartupScreen from '../screens/StartScreen';
 import BeerIngredients from '../screens/BeerIngredients';
 import {googleLogout} from '../store/actions/googleAuth';
 import {facebookLogout} from '../store/actions/facebookAuth';
+import ProfileImagePicker from '../components/ProfileImagePicker';
+import RatingScreen from '../screens/RatingScreen';
 
 const defaultNavOptions = {
   headerTitle: null,
@@ -47,7 +49,7 @@ const BeersNavigator = createStackNavigator(
 
     BeerDetails: BeerDetails,
     BeerIngredients: BeerIngredients,
-    //BeerComments: BeerComments
+    BeerReview: RatingScreen,
   },
   {
     defaultNavigationOptions: defaultNavOptions,
@@ -172,7 +174,8 @@ const MainNavigator = createDrawerNavigator(
     contentComponent: (props) => {
       const dispatch = useDispatch();
       return (
-        <View style={{flex: 1, padding: 10}}>
+        <View style={{flex: 1, padding: 30, alignItems: 'center'}}>
+          <ProfileImagePicker />
           <SafeAreaView
             forceInset={{top: 'always', horizontal: 'never'}}
             style={{
@@ -181,17 +184,6 @@ const MainNavigator = createDrawerNavigator(
               justifyContent: 'space-between',
             }}>
             <DrawerNavigatorItems {...props} />
-            <Image
-              source={require('../assets/image/drawerImage.png')}
-              style={{
-                bottom: 50,
-                position: 'absolute',
-                alignSelf: 'baseline',
-                height: '40%',
-                width: 200,
-                opacity: 0.6,
-              }}
-            />
             <Button
               title="Logout"
               color={Colors.primary}
@@ -205,6 +197,19 @@ const MainNavigator = createDrawerNavigator(
                 } else {
                   dispatch(authActions.logout());
                 }
+              }}
+            />
+            <Image
+              source={require('../assets/image/drawerImage.png')}
+              style={{
+                bottom: 50,
+                position: 'relative',
+                alignSelf: 'baseline',
+                height: '40%',
+                width: 200,
+                opacity: 0.6,
+                left: 20,
+                top: 20,
               }}
             />
           </SafeAreaView>

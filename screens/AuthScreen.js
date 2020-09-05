@@ -14,7 +14,7 @@ import Card from '../components/Card';
 import Colors from '../constants/Colors';
 import {useDispatch} from 'react-redux';
 import * as authActions from '../store/actions/emailAuth';
-import {googleLogIn, googleLogout} from '../store/actions/googleAuth';
+import {googleLogIn} from '../store/actions/googleAuth';
 import {facebookLogIn} from '../store/actions/facebookAuth';
 import DefaultText from '../components/DefaultText';
 
@@ -219,6 +219,7 @@ const styles = StyleSheet.create({
     maxWidth: 400,
     maxHeight: 500,
     padding: 20,
+    opacity: 0.8,
   },
   authContainer: {
     justifyContent: 'center',

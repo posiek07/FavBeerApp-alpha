@@ -34,6 +34,7 @@ export const googleLogIn = () => {
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       // Sign-in the user with the credential
       auth().signInWithCredential(googleCredential);
+      console.log(user);
 
       dispatch(authenticate(user.id, accessToken.accessToken, 60000 * 60));
 
