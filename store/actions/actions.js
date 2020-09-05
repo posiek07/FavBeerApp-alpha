@@ -34,9 +34,10 @@ export const updateRateFav = (beerFavRate) => {
     const userId = getState().auth.userId;
     let firebaseFavRateUrl;
 
+    //Function to recognise which one is the normal email(only numbers) registration and which thru social API
     isFinite(userId)
-      ? (firebaseFavRateUrl = `https://favbeerapp.firebaseio.com/favrate/${userId}/${beerFavRate.id}.json?access_token=${token}`)
-      : (firebaseFavRateUrl = `https://favbeerapp.firebaseio.com/favrate/${userId}/${beerFavRate.id}.json?auth=${token}`);
+      ? (firebaseFavRateUrl = `https://favbeerapp.firebaseio.com/favrate/${userId}/userchoice/${beerFavRate.id}.json?access_token=${token}`)
+      : (firebaseFavRateUrl = `https://favbeerapp.firebaseio.com/favrate/${userId}/userchoice/${beerFavRate.id}.json?auth=${token}`);
 
     const response = await fetch(firebaseFavRateUrl, {
       method: 'PATCH',
@@ -52,7 +53,7 @@ export const updateRateFav = (beerFavRate) => {
     });
 
     const responseData = await response.json();
-    responseData;
+    console.log(responseData);
 
     const updatedBeerFavRate = {
       id: beerFavRate.id,
@@ -60,6 +61,8 @@ export const updateRateFav = (beerFavRate) => {
         beerFavRate.favorite !== 'undefined' ? beerFavRate.favorite : null,
       rating: beerFavRate.rating !== 'undefinded' ? beerFavRate.rating : null,
     };
+
+    console.log(updatedBeerFavRate);
 
     dispatch({
       type: actionTypes.TOGGLE_FAVORITE,
@@ -75,14 +78,16 @@ export const fetchData = () => {
     dispatch(fetchBeersStart());
     (async () => {
       const [res1, res2, res3, res4, res5, res6] = await Promise.all([
-        axios.get(' https://api.punkapi.com/v2/beers?page=1&per_page=80'),
+        axios.get('https://api.punkapi.com/v2/beers?page=1&per_page=80'),
         axios.get('https://api.punkapi.com/v2/beers?page=2&per_page=80'),
         axios.get('https://api.punkapi.com/v2/beers?page=3&per_page=80'),
         axios.get('https://api.punkapi.com/v2/beers?page=4&per_page=80'),
         axios.get('https://api.punkapi.com/v2/beers?page=5&per_page=80'),
-        axios.get(`https://favbeerapp.firebaseio.com/favrate/${userId}/.json`),
+        axios.get(
+          `https://favbeerapp.firebaseio.com/favrate/${userId}/userchoice.json`,
+        ),
       ]).catch((error) => {
-        throw error;
+        console.log(error);
       });
 
       const favRate = res6.data;

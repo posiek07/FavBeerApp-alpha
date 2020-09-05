@@ -67,6 +67,16 @@ const BeerDetails = (props) => {
     });
   };
 
+  const ratingNavigationHandler = () => {
+    props.navigation.navigate({
+      routeName: 'BeerReview',
+      params: {
+        beerId: beerId,
+        beerName: selectedBeer.name,
+      },
+    });
+  };
+
   return (
     <View style={styles.layout}>
       <View style={styles.container}>
@@ -133,14 +143,14 @@ const BeerDetails = (props) => {
       <TouchableOpacity
         activeOpacity={0.1}
         style={styles.TouchableOpacityStyle}>
-        {/* <Icon
+        <Icon
           title="rating"
           name="star-half-outline"
           color="orange"
           size={35}
           style={styles.floatingReceiptStyle}
-          onPress={() => toggleBeerFav(!favorite)}
-        /> */}
+          onPress={ratingNavigationHandler}
+        />
         <Icon
           title="receipe"
           name="receipt-outline"

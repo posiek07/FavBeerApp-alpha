@@ -1,10 +1,12 @@
 import React, {useCallback} from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {SafeAreaView, StyleSheet, View, Button} from 'react-native';
 import {useSelector} from 'react-redux';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import CustomHeaderButton from '../components/CustomHeaderButton';
 import {FlatList} from 'react-native-gesture-handler';
 import CardItem from '../components/CardItem';
+import ImagePicker from 'react-native-image-picker';
+import ProfileImagePicker from '../components/ProfileImagePicker';
 
 const FavoriteScreen = (props) => {
   const beers = useSelector((state) => state.beers.beers);
@@ -36,6 +38,7 @@ const FavoriteScreen = (props) => {
     },
     [navigationDetails],
   );
+
 
   return (
     <View style={styles.container}>
