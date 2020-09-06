@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
   detailRatingContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 30,
   },
   header: {alignItems: 'center'},
   headerText: {

@@ -32,16 +32,16 @@ export const uploadImage = async (imageUri) => {
   }
 };
 
-export const deleteImage = async (imageName) => {
-  const storageRef = storage().ref(`commentImages/${imageName}`);
+// export const deleteImage = async (imageName) => {
+//   const storageRef = storage().ref(`commentImages/${imageName}`);
 
-  storageRef
-    .delete()
-    .then(() => {
-      console.log('deleted');
-      return;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+//   storageRef
+//     .delete()
+//     .then(() => {
+//       console.log('deleted');
+//       return;
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };

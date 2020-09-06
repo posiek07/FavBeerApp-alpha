@@ -76,11 +76,9 @@ const reducer = (state = initialState, action) => {
           ? (updatedFavRateBeers[existingIndex].rating =
               action.beerFavRate.rating)
           : null;
-        console.log(updatedFavRateBeers);
         return {...state, beersFavRate: updatedFavRateBeers};
       } else {
         const beerFavRate = action.beerFavRate;
-        console.log(beerFavRate);
 
         return {...state, beersFavRate: state.beersFavRate.concat(beerFavRate)};
       }

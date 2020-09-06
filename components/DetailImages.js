@@ -4,7 +4,6 @@ import Card from './Card';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Colors from '../constants/Colors';
 import ImagePicker from 'react-native-image-picker';
-import {uploadImage, deleteImage} from '../hooks/useFirabeStorage';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 
 const DetailImages = (props) => {
@@ -32,40 +31,15 @@ const DetailImages = (props) => {
   };
 
   const saveImageHandler = async (response) => {
-    try {
-      setImgLoading(true);
-      console.log('Image: ' + response.uri);
-      const webUrl = await uploadImage(response.uri);
-
-      setImagesUrl((prevState) => [...prevState, webUrl]);
-    } catch (err) {
-      console.log('image error');
-    } finally {
-      setImgLoading(false);
-    }
-    if (response.error) {
-      console.log('image error');
-    } else {
-    }
+    setImagesUrl((prevState) => [...prevState, response.uri]);
   };
 
-  const deleteImageHandler = async (url) => {
-    const imgNameIndex = url.indexOf('image');
-    const endImgNameIndex = url.indexOf('?');
-    const imgName = url.slice(imgNameIndex, endImgNameIndex);
-    try {
-      setImgLoading(true);
-      await deleteImage(imgName);
-      setImagesUrl((prevState) =>
-        prevState.filter((item) => {
-          return item !== url;
-        }),
-      );
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setImgLoading(false);
-    }
+  const deleteImageHandler = (url) => {
+    setImagesUrl((prevState) =>
+      prevState.filter((item) => {
+        return item !== url;
+      }),
+    );
   };
 
   useEffect(() => {
