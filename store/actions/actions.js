@@ -53,7 +53,6 @@ export const updateRateFav = (beerFavRate) => {
     });
 
     const responseData = await response.json();
-    console.log(responseData);
 
     const updatedBeerFavRate = {
       id: beerFavRate.id,
@@ -62,7 +61,6 @@ export const updateRateFav = (beerFavRate) => {
       rating: beerFavRate.rating !== 'undefinded' ? beerFavRate.rating : null,
     };
 
-    console.log(updatedBeerFavRate);
 
     dispatch({
       type: actionTypes.TOGGLE_FAVORITE,

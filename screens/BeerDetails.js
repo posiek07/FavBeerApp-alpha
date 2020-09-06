@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -15,6 +15,7 @@ import DefaultText from '../components/DefaultText';
 import {Rating} from 'react-native-elements';
 import {updateRateFav} from '../store/actions/actions';
 import Card from '../components/Card';
+// import Animated from 'react-native-reanimated';
 
 const dimensions = Dimensions.get('screen');
 
@@ -76,6 +77,16 @@ const BeerDetails = (props) => {
       },
     });
   };
+
+  // const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+  // const currentValue = new Animated.Value(1);
+  // useEffect(() => {
+  //   if (!favorite) {
+  //     Animated.spring(new Animated.Clock(), currentValue, {
+  //       toValue: 5,
+  //     }).start();
+  //   }
+  // }, [favorite]);
 
   return (
     <View style={styles.layout}>
@@ -159,25 +170,23 @@ const BeerDetails = (props) => {
           style={styles.floatingReceiptStyle}
           onPress={reciepeNavigationHandler}
         />
-        {!favorite ? (
-          <Icon
-            title="heart"
-            name="heart-outline"
-            color="salmon"
-            size={35}
-            style={styles.floatingHeartStyle}
-            onPress={() => toggleBeerFav(!favorite)}
-          />
-        ) : (
-          <Icon
-            title="heart"
-            name="heart"
-            color="salmon"
-            size={35}
-            style={styles.floatingHeartStyle}
-            onPress={() => toggleBeerFav(!favorite)}
-          />
-        )}
+        <Icon
+          title="heart"
+          name={!favorite ? 'heart-outline' : 'heart'}
+          color="salmon"
+          size={35}
+          style={styles.floatingHeartStyle}
+          onPress={() => toggleBeerFav(!favorite)}
+        />
+        {/* <AnimatedIcon
+          name="heart"
+          color="salmon"
+          size={15}
+          style={{
+            ...styles.floatingHeartStyle,
+            transform: [{scale: currentValue}],
+          }}
+        /> */}
       </TouchableOpacity>
     </View>
   );
@@ -260,14 +269,15 @@ const styles = StyleSheet.create({
   },
 
   floatingHeartStyle: {
-    marginLeft: 60,
+    marginLeft: 55,
     width: 32,
     height: 50,
     opacity: 0.7,
+    // transform: [{scale: currentValue}],
     //backgroundColor:'black'
   },
   floatingReceiptStyle: {
-    marginLeft: 60,
+    marginLeft: 55,
     width: 32,
     height: 50,
     opacity: 0.7,

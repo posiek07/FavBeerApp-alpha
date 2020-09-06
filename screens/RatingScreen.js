@@ -1,11 +1,14 @@
 import React, {useState, useCallback} from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Button} from 'react-native';
 import DetailRating from '../components/DetailRating';
 import DetailImages from '../components/DetailImages';
 import DetailReview from '../components/DetailReview';
 import {useSelector, useDispatch} from 'react-redux';
 import {updateRateFav} from '../store/actions/actions';
 import Card from '../components/Card';
+import {uploadImage} from '../hooks/useFirabeStorage';
+import Colors from '../constants/Colors';
+import {ActivityIndicator} from 'react-native-paper';
 
 const RatingScreen = (props) => {
   const dispatch = useDispatch();
@@ -22,8 +25,11 @@ const RatingScreen = (props) => {
       ? selectedFavRate.rating
       : {taste: null, foam: null, recipe: null},
   );
-
   const [images, setImages] = useState();
+  const [comment, setComment] = useState();
+  const [validity, setValidity] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploaded, setUploaded] = useState(false);
 
   const setRatingHandler = useCallback((rating) => {
     setRating(rating);
@@ -39,8 +45,38 @@ const RatingScreen = (props) => {
     setImages(images);
   }, []);
 
-  console.log(rating);
-  console.log(images);
+  const setCommentHandler = useCallback((comment, isValid) => {
+    setComment(comment);
+    setValidity(isValid);
+  }, []);
+
+  const saveReviewHandler = async () => {
+    const webUrls = [];
+    setIsUploading(true);
+    const asyncForEach = async (array, callback) => {
+      for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array);
+      }
+    };
+    const startUpload = async () =>
+      asyncForEach(images, async (imageUrl) => {
+        const webUrl = await uploadImage(imageUrl);
+        webUrls.push(webUrl);
+      });
+    await startUpload();
+    const review = {
+      data: new Date(),
+      rating: rating ? rating : null,
+      comment: {
+        title: comment.title,
+        description: comment.description,
+      },
+      images: webUrls ? webUrls : null,
+    };
+    setIsUploading(false);
+    setUploaded(true);
+    console.log(review);
+  };
 
   return (
     <ScrollView>
@@ -51,11 +87,24 @@ const RatingScreen = (props) => {
           rating={rating}
           beerName={beerName}
         />
-        <Card style={styles.reviewImagesContainer}>
-          <Text style={styles.headerText}>Your Review</Text>
-          <DetailImages setImages={setImagesHandler} />
-          <DetailReview />
-        </Card>
+        {isUploading ? (
+          <ActivityIndicator size="large" color={Colors.primary} />
+        ) : !uploaded ? (
+          <Card style={styles.reviewImagesContainer}>
+            <Text style={styles.headerText}>Your Review</Text>
+            <DetailImages setImages={setImagesHandler} />
+            <DetailReview setComment={setCommentHandler} />
+            <View style={styles.buttonContainer}>
+              <Button
+                title="Send review"
+                color={validity ? Colors.primary : Colors.grey}
+                onPress={validity ? saveReviewHandler : null}
+              />
+            </View>
+          </Card>
+        ) : (
+          <Text style={styles.uploadText}>Review Posted!</Text>
+        )}
       </View>
     </ScrollView>
   );
@@ -82,6 +131,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Roboto-Bold',
     fontSize: 30,
+  },
+  buttonContainer: {
+    margin: 30,
+    borderRadius: 10,
+  },
+  uploadText: {
+    fontFamily: 'Frijole-Regular',
+    fontWeight: 'normal',
+    fontSize: 20,
   },
 });
 
