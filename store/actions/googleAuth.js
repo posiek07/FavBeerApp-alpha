@@ -5,10 +5,10 @@ import auth from '@react-native-firebase/auth';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const LOGOUT = 'LOGOUT';
 
-export const authenticate = (userId, token, expiryTime) => {
+export const authenticate = (email, userId, token, expiryTime) => {
   return (dispatch) => {
     dispatch(setLogoutTimes(expiryTime));
-    dispatch({type: AUTHENTICATE, userId, token});
+    dispatch({type: AUTHENTICATE, userId, token, email});
   };
 };
 
@@ -34,11 +34,17 @@ export const googleLogIn = () => {
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       // Sign-in the user with the credential
       auth().signInWithCredential(googleCredential);
-
-      dispatch(authenticate(user.id, accessToken.accessToken, 60000 * 60));
+      dispatch(
+        authenticate(user.email, user.id, accessToken.accessToken, 60000 * 60),
+      );
 
       const expirationDate = new Date(new Date().getTime() + 60000 * 60);
-      saveDataToStorage(user.id, accessToken.accessToken, expirationDate);
+      saveDataToStorage(
+        user.email,
+        user.id,
+        accessToken.accessToken,
+        expirationDate,
+      );
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         throw new Error('user cancelled the login flow');
@@ -94,10 +100,11 @@ const setLogoutTimes = (expirationTime) => {
   };
 };
 
-const saveDataToStorage = (userId, token, expirationDate) => {
+const saveDataToStorage = (email, userId, token, expirationDate) => {
   AsyncStorage.setItem(
     'userData',
     JSON.stringify({
+      email: email,
       token: token,
       userId: userId,
       expirationDate: expirationDate.toISOString(),

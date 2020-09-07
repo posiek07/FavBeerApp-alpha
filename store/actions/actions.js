@@ -61,7 +61,6 @@ export const updateRateFav = (beerFavRate) => {
       rating: beerFavRate.rating !== 'undefinded' ? beerFavRate.rating : null,
     };
 
-
     dispatch({
       type: actionTypes.TOGGLE_FAVORITE,
       beerFavRate: updatedBeerFavRate,
