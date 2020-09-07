@@ -33,6 +33,7 @@ import {googleLogout} from '../store/actions/googleAuth';
 import {facebookLogout} from '../store/actions/facebookAuth';
 import ProfileImagePicker from '../components/ProfileImagePicker';
 import RatingScreen from '../screens/RatingScreen';
+import ReviewsScreen from '../screens/ReviewsScreen';
 
 const defaultNavOptions = {
   headerTitle: null,
@@ -50,6 +51,7 @@ const BeersNavigator = createStackNavigator(
     BeerDetails: BeerDetails,
     BeerIngredients: BeerIngredients,
     BeerReview: RatingScreen,
+    Reviews: ReviewsScreen,
   },
   {
     defaultNavigationOptions: defaultNavOptions,

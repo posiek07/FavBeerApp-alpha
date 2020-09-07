@@ -19,7 +19,7 @@ const StartupScreen = (props) => {
         return;
       }
       const transformedData = JSON.parse(userData);
-      const {token, userId, expirationDate} = transformedData;
+      const {token, userId, expirationDate, email} = transformedData;
       const expiryDate = new Date(expirationDate);
       if (expiryDate <= new Date() || !token || !userId) {
         props.navigation.navigate('Auth');
@@ -30,7 +30,7 @@ const StartupScreen = (props) => {
       props.navigation.navigate('Beers', {
         routeName: 'AllBeers',
       });
-      dispatch(authActions.authenticate(userId, token, expirationTime));
+      dispatch(authActions.authenticate(email, userId, token, expirationTime));
     };
     tryLogin();
     SplashScreen.hide();

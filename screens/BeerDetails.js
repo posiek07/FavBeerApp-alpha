@@ -78,6 +78,16 @@ const BeerDetails = (props) => {
     });
   };
 
+  const reviewsNavigationHandler = () => {
+    props.navigation.navigate({
+      routeName: 'Reviews',
+      params: {
+        beerId: beerId,
+        beerName: selectedBeer.name,
+      },
+    });
+  };
+
   // const AnimatedIcon = Animated.createAnimatedComponent(Icon);
   // const currentValue = new Animated.Value(1);
   // useEffect(() => {
@@ -177,6 +187,14 @@ const BeerDetails = (props) => {
           size={35}
           style={styles.floatingHeartStyle}
           onPress={() => toggleBeerFav(!favorite)}
+        />
+        <Icon
+          title="receipe"
+          name="chatbubbles-outline"
+          color={Colors.primary}
+          size={35}
+          style={styles.floatingReceiptStyle}
+          onPress={reviewsNavigationHandler}
         />
         {/* <AnimatedIcon
           name="heart"

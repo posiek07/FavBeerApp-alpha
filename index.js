@@ -12,10 +12,12 @@ import {Provider} from 'react-redux';
 import beersReducer from './store/reducers/beersReducer';
 import thunk from 'redux-thunk';
 import authReducer from './store/reducers/auth';
+import reviewsReducer from './store/reducers/reviewReducer';
 
 const rootReducer = combineReducers({
   beers: beersReducer,
   auth: authReducer,
+  reviews: reviewsReducer,
 });
 
 const composeEnhancers =

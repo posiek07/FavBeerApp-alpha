@@ -5,10 +5,10 @@ import auth from '@react-native-firebase/auth';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const LOGOUT = 'LOGOUT';
 
-export const authenticate = (userId, token, expiryTime) => {
+export const authenticate = (email, userId, token, expiryTime) => {
   return (dispatch) => {
     dispatch(setLogoutTimes(expiryTime));
-    dispatch({type: AUTHENTICATE, userId, token});
+    dispatch({type: AUTHENTICATE, userId, token, email});
   };
 };
 
@@ -39,10 +39,12 @@ export const facebookLogIn = () => {
     await auth().signInWithCredential(facebookCredential);
     const token = await auth().currentUser.getIdToken();
     const user = await auth().currentUser.uid;
+    const email = await auth().currentUser.email;
+    saveDataToStorage(email, user, token, expirationDate);
 
-    saveDataToStorage(user, token, expirationDate);
-
-    dispatch(authenticate(user, token, parseInt(data.expirationTime) * 1000));
+    dispatch(
+      authenticate(email, user, token, parseInt(data.expirationTime) * 1000),
+    );
   };
 };
 
@@ -83,10 +85,11 @@ const setLogoutTimes = (expirationTime) => {
   };
 };
 
-const saveDataToStorage = (userId, token, expirationDate) => {
+const saveDataToStorage = (email, userId, token, expirationDate) => {
   AsyncStorage.setItem(
     'userData',
     JSON.stringify({
+      email: email,
       token: token,
       userId: userId,
       expirationDate: expirationDate.toISOString(),

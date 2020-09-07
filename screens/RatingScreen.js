@@ -5,6 +5,7 @@ import DetailImages from '../components/DetailImages';
 import DetailReview from '../components/DetailReview';
 import {useSelector, useDispatch} from 'react-redux';
 import {updateRateFav} from '../store/actions/actions';
+import {sendReview} from '../store/actions/reviewActions';
 import Card from '../components/Card';
 import {uploadImage} from '../hooks/useFirabeStorage';
 import Colors from '../constants/Colors';
@@ -15,11 +16,12 @@ const RatingScreen = (props) => {
 
   const rateFavBeers = useSelector((state) => state.beers.beersFavRate);
 
+  const email = useSelector((state) => state.auth.email);
+
   const beerId = props.navigation.getParam('beerId');
   const beerName = props.navigation.getParam('beerName');
 
   const selectedFavRate = rateFavBeers.find((object) => object.id === beerId);
-
   const [rating, setRating] = useState(
     selectedFavRate
       ? selectedFavRate.rating
@@ -65,7 +67,10 @@ const RatingScreen = (props) => {
       });
     await startUpload();
     const review = {
-      data: new Date(),
+      id: Math.random().toFixed(5) * 1000000,
+      beerId: beerId,
+      email: email,
+      date: new Date(),
       rating: rating ? rating : null,
       comment: {
         title: comment.title,
@@ -73,6 +78,7 @@ const RatingScreen = (props) => {
       },
       images: webUrls ? webUrls : null,
     };
+    dispatch(sendReview(review));
     setIsUploading(false);
     setUploaded(true);
     console.log(review);
