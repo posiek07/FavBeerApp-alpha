@@ -45,7 +45,7 @@ const DetailRating = (props) => {
         </View>
         <View style={styles.allStarsContainer}>
           <View style={styles.starsContanier}>
-            <DefaultText myStyle={styles.starTitle}>Recipe: </DefaultText>
+            <DefaultText style={styles.starTitle}>Recipe: </DefaultText>
             <Rating
               onFinishRating={(score) => toggleBeerRate(score, 'recipe')}
               fractions={1}
@@ -56,7 +56,7 @@ const DetailRating = (props) => {
             />
           </View>
           <View style={styles.starsContanier}>
-            <DefaultText myStyle={styles.starTitle}>Taste: </DefaultText>
+            <DefaultText style={styles.starTitle}>Taste: </DefaultText>
             <Rating
               onFinishRating={(score) => toggleBeerRate(score, 'taste')}
               fractions={1}
@@ -67,7 +67,7 @@ const DetailRating = (props) => {
             />
           </View>
           <View style={styles.starsContanier}>
-            <DefaultText myStyle={styles.starTitle}>Foam: </DefaultText>
+            <DefaultText style={styles.starTitle}>Foam: </DefaultText>
             <Rating
               onFinishRating={(score) => toggleBeerRate(score, 'foam')}
               fractions={1}

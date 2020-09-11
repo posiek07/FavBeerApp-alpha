@@ -73,13 +73,34 @@ export const fetchData = () => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
     dispatch(fetchBeersStart());
+
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
     (async () => {
-      const [res1, res2, res3, res4, res5, res6] = await Promise.all([
+      const [
+        res1,
+        res7,
+        res2,
+        res8,
+        res3,
+        res9,
+        res4,
+        res10,
+        res5,
+        res11,
+        res6,
+      ] = await Promise.all([
         axios.get('https://api.punkapi.com/v2/beers?page=1&per_page=80'),
+        await sleep(1100),
         axios.get('https://api.punkapi.com/v2/beers?page=2&per_page=80'),
+        await sleep(1100),
         axios.get('https://api.punkapi.com/v2/beers?page=3&per_page=80'),
+        await sleep(1100),
         axios.get('https://api.punkapi.com/v2/beers?page=4&per_page=80'),
+        await sleep(1100),
         axios.get('https://api.punkapi.com/v2/beers?page=5&per_page=80'),
+        await sleep(1100),
         axios.get(
           `https://favbeerapp.firebaseio.com/favrate/${userId}/userchoice.json`,
         ),

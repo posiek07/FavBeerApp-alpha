@@ -8,8 +8,6 @@ import SplashScreen from 'react-native-splash-screen';
 const StartupScreen = (props) => {
   const dispatch = useDispatch();
 
-  useEffect(() => {});
-
   useEffect(() => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem('userData');
@@ -32,15 +30,12 @@ const StartupScreen = (props) => {
       });
       dispatch(authActions.authenticate(email, userId, token, expirationTime));
     };
-    tryLogin();
-    SplashScreen.hide();
+    tryLogin().then(() => SplashScreen.hide());
   }, [dispatch]);
 
   return (
     <View style={styles.centered}>
-      <ActivityIndicator
-        size="large"
-        color={Colors.primary}></ActivityIndicator>
+      <ActivityIndicator size="large" color={Colors.primary} />
     </View>
   );
 };
