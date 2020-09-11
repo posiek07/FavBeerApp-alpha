@@ -1,15 +1,25 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {StyleSheet, Text, View, FlatList, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import {fetchReviews} from '../store/actions/reviewActions';
 import ReviewItem from '../components/ReviewItem';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import Colors from '../constants/Colors';
 
 const ReviewsScreen = (props) => {
   const beerId = props.navigation.getParam('beerId');
   const beerName = props.navigation.getParam('beerName');
 
   const reviews = useSelector((state) => state.reviews.reviews);
+  const loading = useSelector((state) => state.reviews.loading);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,8 +32,13 @@ const ReviewsScreen = (props) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.ratingScreenContainer}>
-        <Text style={styles.name}>{beerName}</Text>
-        {!reviews ? null : (
+        <View style={styles.reviewTitle}>
+          <Text style={styles.name}>{beerName}</Text>
+          <Text style={styles.name}>Reviews</Text>
+        </View>
+        {loading ? (
+          <ActivityIndicator color={Colors.primary} size="large" />
+        ) : reviews ? (
           <FlatList
             data={Object.keys(reviews)}
             renderItem={({item}) => (
@@ -37,6 +52,8 @@ const ReviewsScreen = (props) => {
               />
             )}
           />
+        ) : (
+          <Text>No Reviews</Text>
         )}
       </View>
     </SafeAreaView>
@@ -47,8 +64,10 @@ export default ReviewsScreen;
 
 const styles = StyleSheet.create({
   ratingScreenContainer: {
-    width: '100%',
     alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    marginBottom: 50,
   },
   name: {
     fontFamily: 'Frijole-Regular',
@@ -56,5 +75,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
     padding: 8,
+  },
+  reviewTitle: {
+    width: '100%',
+    backgroundColor: Colors.accent,
+    borderBottomEndRadius: 30,
+    borderBottomStartRadius: 30,
   },
 });

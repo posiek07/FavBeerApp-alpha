@@ -223,8 +223,8 @@ const MainNavigator = createDrawerNavigator(
 
 const StartNavigation = createSwitchNavigator({
   Startup: StartupScreen,
-  Auth: AuthNavigator,
   Main: MainNavigator,
+  Auth: AuthNavigator,
 });
 
 export default createAppContainer(StartNavigation);

@@ -1,12 +1,14 @@
 import React, {useEffect, useCallback} from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, useWindowDimensions} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '../store/actions/actions';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import CustomHeaderButton from '../components/CustomHeaderButton';
 import {FlatList} from 'react-native-gesture-handler';
 import ListItem from '../components/ListItem/ListItem';
-import {NavigationActions} from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
+
+
 
 const RatedBeers = (props) => {
   const beers = useSelector((state) => state.beers.beers);
@@ -24,14 +26,6 @@ const RatedBeers = (props) => {
   }
 
   ratedBeers.sort((a, b) => b.rating - a.rating);
-
-  const fetchData = () => {
-    dispatch(actions.fetchData());
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const navigationDetails = (id, name) => {
     props.navigation.navigate({

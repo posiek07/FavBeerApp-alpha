@@ -119,7 +119,7 @@ const BeerDetails = (props) => {
                 type="custom"
               />
             </View>
-            <DefaultText myStyle={styles.bigDetailsTitle}>ABV:</DefaultText>
+            <DefaultText style={styles.bigDetailsTitle}>ABV:</DefaultText>
             <Text style={styles.bigDetailsValue}>
               <Icon
                 title="flash"
@@ -129,10 +129,10 @@ const BeerDetails = (props) => {
               />
               {selectedBeer.abv}%
             </Text>
-            <DefaultText myStyle={styles.bigDetailsTitle}>
+            <DefaultText style={styles.bigDetailsTitle}>
               First Brewed:
             </DefaultText>
-            <DefaultText myStyle={styles.bigDetailsValue}>
+            <DefaultText style={styles.bigDetailsValue}>
               <Icon
                 title="today"
                 name="today-outline"
@@ -142,13 +142,13 @@ const BeerDetails = (props) => {
               {selectedBeer.first_brewed}
             </DefaultText>
             <Card style={styles.card}>
-              <DefaultText myStyle={styles.descriptionTitle}>
+              <DefaultText style={styles.descriptionTitle}>
                 Description:
               </DefaultText>
               <DefaultText>{selectedBeer.description}</DefaultText>
             </Card>
             <Card style={styles.card}>
-              <DefaultText myStyle={styles.descriptionTitle}>
+              <DefaultText style={styles.descriptionTitle}>
                 Food Pairing:
               </DefaultText>
               {selectedBeer.food_pairing.map((food, index) => (

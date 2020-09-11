@@ -137,9 +137,7 @@ const AuthScreen = (props) => {
                   source={require('../assets/image/authLogo.png')}
                   style={styles.logoImage}
                 />
-                <DefaultText myStyle={styles.logoText}>
-                  Brew Your Dog
-                </DefaultText>
+                <DefaultText style={styles.logoText}>Brew Your Dog</DefaultText>
               </View>
               <Input
                 id="email"

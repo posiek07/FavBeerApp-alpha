@@ -1,43 +1,135 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, Dimensions} from 'react-native';
 import Card from './Card';
 import DefaultText from './DefaultText';
 import Colors from '../constants/Colors';
 import {TouchableHighlight} from 'react-native-gesture-handler';
+import moment from 'moment';
+import {Rating} from 'react-native-ratings';
+import ReadMore from 'react-native-read-more-text';
 
 const ReviewItem = (props) => {
+  const dateMoment = moment(props.date).format('dddd, MMMM Do YYYY, h:mm:ss a');
+
+  console.log(props.rating);
   return (
-    <Card style={styles.reviewItemContainer}>
-      <View>
-        <DefaultText>{props.email}</DefaultText>
-        <DefaultText>{props.title}</DefaultText>
-        <DefaultText>{props.description}</DefaultText>
-        <DefaultText>{props.date}</DefaultText>
-        {props.images ? (
-          <Card style={styles.imageDetailContainer}>
-            <DefaultText>Images</DefaultText>
-            <View style={styles.imageContainer}>
-              {props.images.map((url) => (
-                <TouchableHighlight
-                  style={styles.imageWrapper}
-                  // onPress={() => deleteImageHandler(url)}
-                >
-                  <Image style={styles.image} source={{uri: url}} />
-                </TouchableHighlight>
-              ))}
+    <View style={styles.reviewItemContainer}>
+      <Card style={styles.reviewItemCardContainer}>
+        <View style={styles.cardInnerWrapper}>
+          <View style={styles.starsEmailContainer}>
+            <View>
+              <DefaultText style={styles.header}>email:</DefaultText>
+              <DefaultText style={styles.textEmail}>{props.email}</DefaultText>
             </View>
-          </Card>
-        ) : null}
-      </View>
-    </Card>
+            {props.rating ? (
+              <View style={styles.allStarsContainer}>
+                <View style={styles.starsContanier}>
+                  <DefaultText style={styles.starTitle}>Recipe: </DefaultText>
+                  <Rating
+                    startingValue={props.rating.taste}
+                    ratingBackgroundColor="#fcfcfc"
+                    type="star"
+                    imageSize={15}
+                    readonly
+                  />
+                </View>
+                <View style={styles.starsContanier}>
+                  <DefaultText style={styles.starTitle}>Taste: </DefaultText>
+                  <Rating
+                    startingValue={props.rating.taste}
+                    ratingBackgroundColor="#fcfcfc"
+                    type="star"
+                    imageSize={15}
+                    readonly
+                  />
+                </View>
+                <View style={styles.starsContanier}>
+                  <DefaultText style={styles.starTitle}>Foam: </DefaultText>
+                  <Rating
+                    startingValue={props.rating.taste}
+                    ratingBackgroundColor="#fcfcfc"
+                    type="star"
+                    imageSize={15}
+                    readonly
+                  />
+                </View>
+              </View>
+            ) : null}
+          </View>
+
+          <DefaultText style={styles.text}>
+            Review left on {dateMoment}
+          </DefaultText>
+          {props.images ? (
+            <Card style={styles.imageDetailContainer}>
+              <View style={styles.imageContainer}>
+                {props.images.map((url) => (
+                  <TouchableHighlight
+                    style={styles.imageWrapper}
+                    // onPress={() => deleteImageHandler(url)}
+                  >
+                    <Image style={styles.image} source={{uri: url}} />
+                  </TouchableHighlight>
+                ))}
+              </View>
+            </Card>
+          ) : null}
+          <DefaultText style={styles.header}>Title:</DefaultText>
+          <DefaultText style={styles.textTitle}>{props.title}</DefaultText>
+          <DefaultText style={styles.header}>Description: </DefaultText>
+          <ReadMore numberOfLines={3}>
+            <Text style={styles.textDescription}>{props.description}</Text>
+          </ReadMore>
+        </View>
+      </Card>
+    </View>
   );
 };
 
 export default ReviewItem;
 
+const windowWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
   reviewItemContainer: {
-    width: '80%',
+    width: windowWidth / 1.1,
+    padding: 10,
+  },
+  cardInnerWrapper: {
+    padding: 14,
+  },
+  reviewItemCardContainer: {
+    width: '100%',
+    marginBottom: 20,
+  },
+  starsEmailContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+
+  header: {
+    fontSize: 15,
+    fontFamily: 'Roboto-Bold',
+    alignContent: 'flex-start',
+    textAlign: 'left',
+    marginBottom: 10,
+  },
+  text: {
+    fontFamily: 'Roboto-Italic',
+    textAlign: 'left',
+  },
+  textTitle: {
+    fontFamily: 'Roboto-Italic',
+    textAlign: 'left',
+    fontSize: 17,
+    marginBottom: 10,
+  },
+  textEmail: {
+    fontFamily: 'Roboto-Bold',
+    textAlign: 'left',
+    fontSize: 14,
+    color: Colors.primary,
   },
   imageDetailContainer: {
     height: 80,
@@ -61,4 +153,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: Colors.primary,
   },
+  allStarsContainer: {
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    padding: 10,
+  },
+  starsContanier: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  starTitle: {},
 });
