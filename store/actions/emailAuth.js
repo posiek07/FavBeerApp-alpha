@@ -1,150 +1,91 @@
-import {AsyncStorage} from 'react-native';
+import { AsyncStorage } from 'react-native';
+import auth from '@react-native-firebase/auth';
 
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const LOGOUT = 'LOGOUT';
 
-export const authenticate = (email, userId, token, expiryTime) => {
+export const authenticate = (email, userId, token, photoURL, authClient) => {
   return (dispatch) => {
-    dispatch(setLogoutTimes(expiryTime));
-    dispatch({type: AUTHENTICATE, userId, token, email});
+    dispatch({ type: AUTHENTICATE, userId, token, email, photoURL, authClient });
   };
 };
 
 export const signup = (email, password) => {
   return async (dispatch) => {
-    const response = await fetch(
-      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD4uEk8QTe3s2ewigsndAu1wQ5ja3ubfus',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-          returnSecureToken: true,
-        }),
-      },
+    const userCredential = auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log('User account created & signed in!');
+      })
+      .catch((error) => {
+        if (error.code === 'auth/email-already-in-use') {
+          throw new Error('That email address is already in use!');
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          throw new Error('That email address is invalid!');
+        }
+
+        console.error(error);
+      });
+    const emailCredentials = await auth.EmailAuthProvider.credential(
+      userCredential,
     );
 
-    if (!response.ok) {
-      const errorresponseData = await response.json();
-      const errorId = errorresponseData.error.message;
-      let message = 'Something went wrong!';
-      if (errorId === 'EMAIL_EXISTS') {
-        message = 'This email exists already!';
-      }
-      throw new Error(message);
-    }
+    let currentUser;
 
-    const responseData = await response.json();
+    auth().onAuthStateChanged((user) => (currentUser = user));
 
-    dispatch(
-      authenticate(
-        email,
-        responseData.localId,
-        responseData.idToken,
-        parseInt(responseData.expiresIn) * 1000,
-      ),
-    );
+    const token = await auth().currentUser.getIdToken(true);
 
-    const expirationDate = new Date(
-      new Date().getTime() + parseInt(responseData.expiresIn) * 1000,
-    );
-    saveDataToStorage(
-      email,
-      responseData.idToken,
-      responseData.localId,
-      expirationDate,
-    );
+    console.log(token);
+
+    dispatch(authenticate(currentUser.email, currentUser.uid, token, currentUser.photoURL));
   };
 };
 
 export const logIn = (email, password) => {
   return async (dispatch) => {
-    const response = await fetch(
-      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD4uEk8QTe3s2ewigsndAu1wQ5ja3ubfus',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-          returnSecureToken: true,
-        }),
-      },
-    );
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log('Signed in!');
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          throw new Error('That email address is already in use!');
+        }
 
-    if (!response.ok) {
-      const errorresponseData = await response.json();
-      const errorId = errorresponseData.error.message;
-      let message = 'Something went wrong!';
-      if (errorId === 'EMAIL_NOT_FOUND') {
-        message = 'This email could not be found';
-      } else if (errorId === 'INVALID_PASSWORD') {
-        message = 'Wrong password!';
-      }
-      throw new Error(message);
-    }
+        if (error.code === 'auth/wrong-password') {
+          throw new Error('Wrong password!');
+        }
 
-    const responseData = await response.json();
+        if (error.code === 'auth/user-not-found') {
+          throw new Error('User not found!');
+        }
 
-    dispatch(
-      authenticate(
-        email,
-        responseData.localId,
-        responseData.idToken,
-        parseInt(responseData.expiresIn) * 1000,
-      ),
-    );
+        if (error.code === 'auth/user-disabled') {
+          throw new Error('User blocked. Please contant Admin.');
+        }
+      });
+    let currentUser;
 
-    const expirationDate = new Date(
-      new Date().getTime() + parseInt(responseData.expiresIn) * 1000,
-    );
-    saveDataToStorage(
-      email,
-      responseData.idToken,
-      responseData.localId,
-      expirationDate,
-    );
+    auth().onAuthStateChanged((user) => (currentUser = user));
+
+    const token = await auth().currentUser.getIdToken(true);
+
+    console.log(currentUser);
+
+    dispatch(authenticate(currentUser.email, currentUser.uid, token));
+
   };
 };
 
-let timer;
 
 export const logout = () => {
+  auth().signOut();
   return (dispatch) => {
-    AsyncStorage.removeItem('userData');
-    clearLogoutTimer();
-    dispatch({type: LOGOUT});
+    dispatch({ type: LOGOUT });
   };
 };
 
-const clearLogoutTimer = () => {
-  if (timer) {
-    clearTimeout(timer);
-  }
-};
-
-const setLogoutTimes = (expirationTime) => {
-  return (dispatch) => {
-    timer = setTimeout(() => {
-      dispatch(logout());
-    }, expirationTime);
-  };
-};
-
-const saveDataToStorage = async (email, token, userId, expirationDate) => {
-  await AsyncStorage.setItem(
-    'userData',
-    JSON.stringify({
-      email: email,
-      token: token,
-      userId: userId,
-      expirationDate: expirationDate.toISOString(),
-      logout: 'emailLogout',
-    }),
-  );
-};

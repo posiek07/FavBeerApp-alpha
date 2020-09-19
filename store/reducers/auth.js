@@ -1,8 +1,9 @@
-import {AUTHENTICATE, LOGOUT} from '../actions/emailAuth';
+import { AUTHENTICATE, LOGOUT } from '../actions/emailAuth';
 const initialState = {
   email: null,
   token: null,
   userId: null,
+  photoURL: null,
 };
 
 export default (state = initialState, action) => {
@@ -12,6 +13,8 @@ export default (state = initialState, action) => {
         token: action.token,
         userId: action.userId,
         email: action.email,
+        photoURL: action.photoURL,
+        authClient: action.authClient
       };
     case LOGOUT:
       return initialState;
