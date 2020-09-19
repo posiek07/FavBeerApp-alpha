@@ -1,4 +1,4 @@
-import React, {useReducer, useCallback, useState, useEffect} from 'react';
+import React, { useReducer, useCallback, useState, useEffect } from 'react';
 import {
   ScrollView,
   View,
@@ -12,11 +12,12 @@ import {
 import Input from '../components/Input';
 import Card from '../components/Card';
 import Colors from '../constants/Colors';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as authActions from '../store/actions/emailAuth';
-import {googleLogIn} from '../store/actions/googleAuth';
-import {facebookLogIn} from '../store/actions/facebookAuth';
+import { googleLogIn } from '../store/actions/googleAuth';
+import { facebookLogIn } from '../store/actions/facebookAuth';
 import DefaultText from '../components/DefaultText';
+import { logout } from '../store/actions/emailAuth';
 
 const formReducer = (state, action) => {
   if (action.type === 'INPUT_UPDATE') {
@@ -46,17 +47,19 @@ const AuthScreen = (props) => {
     inputValues: {
       email: '',
       password: '',
+      confirmPass: '',
     },
     inputValidities: {
       email: false,
       password: false,
+      confirmPass: false,
     },
     formIsValid: false,
   });
 
   useEffect(() => {
     if (error) {
-      Alert.alert('An Error Occuered', error, [{text: 'Okey'}]);
+      Alert.alert('An Error Occuered', error, [{ text: 'Okey' }]);
     }
     setError(null);
   });
@@ -70,16 +73,21 @@ const AuthScreen = (props) => {
     let action;
     isSignUp
       ? (action = authActions.signup(
-          formState.inputValues.email,
-          formState.inputValues.password,
-        ))
+        formState.inputValues.email,
+        formState.inputValues.password,
+      ))
       : (action = authActions.logIn(
-          formState.inputValues.email,
-          formState.inputValues.password,
-        ));
+        formState.inputValues.email,
+        formState.inputValues.password,
+      ));
     setError(null);
     setIsLoading(true);
     try {
+      if (formState.inputValues.password !== formState.inputValues.confirmPass) {
+        setError(`Password doasn't match to confirmed password. Please try again`)
+        setIsLoading(false)
+        return
+      }
       await dispatch(action);
       props.navigation.navigate('Beers', {
         logout: 'emailLogout',
@@ -164,16 +172,29 @@ const AuthScreen = (props) => {
                 initialValue=""
                 secureTextEntry
               />
+              {isSignUp ? <Input
+                id="confirmPass"
+                label="Confirm Password"
+                keyboardType="default"
+                secureTextEntry
+                required
+                minLength={5}
+                autoCapitalize="none"
+                errorText="Please enter a valid confirmation password."
+                onInputChange={inputChangeHandler}
+                initialValue=""
+                secureTextEntry
+              /> : null}
               <View style={styles.buttonContainer}>
                 {isLoading ? (
                   <ActivityIndicator size="small" color={Colors.primary} />
                 ) : (
-                  <Button
-                    title={isSignUp ? 'Sign up' : 'Login'}
-                    color={Colors.primary}
-                    onPress={authHandler}
-                  />
-                )}
+                    <Button
+                      title={isSignUp ? 'Sign up' : 'Login'}
+                      color={Colors.primary}
+                      onPress={authHandler}
+                    />
+                  )}
               </View>
               <View style={styles.buttonContainer}>
                 <Button

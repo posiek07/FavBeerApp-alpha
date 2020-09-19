@@ -1,5 +1,13 @@
-import React from 'react';
-import {StyleSheet, Text, View, Image, Dimensions} from 'react-native';
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Dimensions,
+  Modal,
+  useWindowDimensions,
+} from 'react-native';
 import Card from './Card';
 import DefaultText from './DefaultText';
 import Colors from '../constants/Colors';
@@ -7,9 +15,40 @@ import {TouchableHighlight} from 'react-native-gesture-handler';
 import moment from 'moment';
 import {Rating} from 'react-native-ratings';
 import ReadMore from 'react-native-read-more-text';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const ReviewItem = (props) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+
   const dateMoment = moment(props.date).format('dddd, MMMM Do YYYY, h:mm:ss a');
+
+  const windowWidth = useWindowDimensions().width;
+  const windowHeight = useWindowDimensions().height;
+
+  const images = props.images
+    ? props.images.map((imageUrl) =>
+        Object.assign({
+          url: imageUrl,
+          width: windowWidth,
+          height: windowHeight,
+        }),
+      )
+    : [
+        {
+          url: null,
+          width: windowWidth,
+          height: windowHeight,
+        },
+      ];
+
+  const toggleModal = (index) => {
+    setCurrentImageIndex(index);
+    setModalOpen(true);
+  };
+
+  console.log(images);
 
   console.log(props.rating);
   return (
@@ -63,11 +102,10 @@ const ReviewItem = (props) => {
           {props.images ? (
             <Card style={styles.imageDetailContainer}>
               <View style={styles.imageContainer}>
-                {props.images.map((url) => (
+                {props.images.map((url, index) => (
                   <TouchableHighlight
                     style={styles.imageWrapper}
-                    // onPress={() => deleteImageHandler(url)}
-                  >
+                    onPress={() => toggleModal(index)}>
                     <Image style={styles.image} source={{uri: url}} />
                   </TouchableHighlight>
                 ))}
@@ -82,6 +120,26 @@ const ReviewItem = (props) => {
           </ReadMore>
         </View>
       </Card>
+      <Modal visible={modalOpen} transparent={true}>
+        <ImageViewer
+          enableSwipeDown={true}
+          onCancel={() => setModalOpen(false)}
+          imageUrls={images}
+          index={currentImageIndex}
+          useNativeDriver={true}
+          enablePreload={true}
+          renderHeader={() => (
+            <Icon
+              title="receipe"
+              name="close-outline"
+              color={'#ccc'}
+              size={35}
+              style={styles.closeButton}
+              onPress={() => setModalOpen(false)}
+            />
+          )}
+        />
+      </Modal>
     </View>
   );
 };
@@ -163,4 +221,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   starTitle: {},
+  closeButton: {
+    position: 'absolute',
+    left: 10,
+    zIndex: 1,
+  },
 });

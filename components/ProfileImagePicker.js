@@ -1,13 +1,15 @@
-import React, {useState, Fragment} from 'react';
-import {StyleSheet, Text, View, Image, Button} from 'react-native';
+import React, { useState, Fragment } from 'react';
+import { StyleSheet, Text, View, Image, Button } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-import {Avatar, Accessory} from 'react-native-elements';
+import { Avatar, Accessory } from 'react-native-elements';
+import { useSelector } from 'react-redux';
 
 
-const ProfileImagePicker = ({onImagePicked}) => {
+const ProfileImagePicker = () => {
+  const photo = useSelector(state => state.auth.photoURL)
+
   const [selectedImage, setSelectedImage] = useState({
-    uri:
-      'https://www.iconfinder.com/data/icons/social-flat-buttons-3/512/anonymous-512.png',
+    uri: photo ? photo : 'https://i2.wp.com/www.craftbeerjoe.com/wp-content/uploads/2018/01/brewdog-logo-crest.jpg?fit=885%2C1024&ssl=1',
   });
 
   const options = {
@@ -24,7 +26,6 @@ const ProfileImagePicker = ({onImagePicked}) => {
   };
 
   const pickImageHandler = () => {
-    console.log('picking');
     ImagePicker.showImagePicker(options, saveImageHandler);
   };
 
@@ -33,7 +34,7 @@ const ProfileImagePicker = ({onImagePicked}) => {
       console.log('image error');
     } else {
       console.log('Image: ' + response.uri);
-      setSelectedImage({uri: response.uri});
+      setSelectedImage({ uri: response.uri });
       //   onImagePicked({uri: response.uri});
     }
   };
@@ -46,7 +47,6 @@ const ProfileImagePicker = ({onImagePicked}) => {
           rounded
           size="large"
           source={selectedImage}>
-          <Accessory />
         </Avatar>
       </View>
     </Fragment>

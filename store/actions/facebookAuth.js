@@ -1,14 +1,13 @@
-import {AsyncStorage, Alert} from 'react-native';
-import {AccessToken, LoginManager} from 'react-native-fbsdk';
+import { AsyncStorage, Alert } from 'react-native';
+import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import auth from '@react-native-firebase/auth';
 
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const LOGOUT = 'LOGOUT';
 
-export const authenticate = (email, userId, token, expiryTime) => {
+export const authenticate = (email, userId, token, photoURL, authClient) => {
   return (dispatch) => {
-    dispatch(setLogoutTimes(expiryTime));
-    dispatch({type: AUTHENTICATE, userId, token, email});
+    dispatch({ type: AUTHENTICATE, userId, token, email, photoURL, authClient });
   };
 };
 
@@ -19,12 +18,12 @@ export const facebookLogIn = () => {
       'email',
     ]);
     if (result.isCancelled) {
-      throw 'User cancelled the login process';
+      throw new Error('User cancelled the login process');
     }
     // Once signed in, get the users AccesToken
     const data = await AccessToken.getCurrentAccessToken();
     if (!data) {
-      throw 'Something went wrong obtaining access token';
+      throw new Error('Something went wrong obtaining access token');
     }
 
     // Create a Firebase credential with the AccessToken
@@ -33,29 +32,26 @@ export const facebookLogIn = () => {
       data.accessToken,
     );
 
-    const expirationDate = new Date(
-      new Date().getTime() + parseInt(data.expirationTime) * 1000,
+    const userCredential = await auth().signInWithCredential(
+      facebookCredential,
     );
-    await auth().signInWithCredential(facebookCredential);
-    const token = await auth().currentUser.getIdToken();
-    const user = await auth().currentUser.uid;
-    const email = await auth().currentUser.email;
-    saveDataToStorage(email, user, token, expirationDate);
 
+    const token = await auth().currentUser.getIdToken();
+    const { uid, email, photoURL } = await auth().currentUser
+    const authClient = 'facebookSignIn'
     dispatch(
-      authenticate(email, user, token, parseInt(data.expirationTime) * 1000),
+      authenticate(email, uid, token, photoURL, authClient),
     );
   };
 };
 
 // Sign-in the user with the credential
 
-let timer;
 
 export const facebookLogout = () => {
   return async (dispatch) => {
     try {
-      AsyncStorage.removeItem('userData');
+      LoginManager.logOut()
       auth().signOut();
       dispatch(logout());
     } catch (err) {
@@ -66,34 +62,6 @@ export const facebookLogout = () => {
 
 export const logout = () => {
   return (dispatch) => {
-    clearLogoutTimer();
-    dispatch({type: LOGOUT});
+    dispatch({ type: LOGOUT });
   };
-};
-
-const clearLogoutTimer = () => {
-  if (timer) {
-    clearTimeout(timer);
-  }
-};
-
-const setLogoutTimes = (expirationTime) => {
-  return (dispatch) => {
-    timer = setTimeout(() => {
-      dispatch(googleLogout());
-    }, expirationTime);
-  };
-};
-
-const saveDataToStorage = (email, userId, token, expirationDate) => {
-  AsyncStorage.setItem(
-    'userData',
-    JSON.stringify({
-      email: email,
-      token: token,
-      userId: userId,
-      expirationDate: expirationDate.toISOString(),
-      logout: 'facebookLogout',
-    }),
-  );
 };
