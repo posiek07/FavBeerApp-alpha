@@ -1,11 +1,11 @@
 <h1 align="center">Welcome to Brew Your Dog 👋</h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0-blue.svg?cacheSeconds=2592000" />
+  <img alt="Version" src="https://img.shields.io/badge/version-1.2-blue.svg?cacheSeconds=2592000" />
 </p>
 
 > Do you like BrewDog Brewery beers? Here is a app where you can tag and rate recipes for your favorite beers.
 
-> React Native app builded with Punk API and Firebase database + Social media auth.
+> React Native app builded with Punk API and Firebase with Authorisation, Photos, Comments and Ranking.
 
 <br/><<a href="https://postimg.cc/2bhBVsqR" target="_blank"><img src="https://i.postimg.cc/2bhBVsqR/118376216-342276040291047-2290637765414475495-n.jpg" alt="118376216-342276040291047-2290637765414475495-n"/></a>
 <a href="https://postimg.cc/dLqTVSwp" target="_blank"><img src="https://i.postimg.cc/dLqTVSwp/118398665-937383403409057-2650895803824680231-n.jpg" alt="118398665-937383403409057-2650895803824680231-n"/></a>
