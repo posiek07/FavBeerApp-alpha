@@ -18,7 +18,11 @@ const CardItem = (props) => {
           <View style={styles.imageWrap}>
             <Image
               resizeMode="contain"
-              source={{uri: props.item.image_url}}
+              source={{
+                uri: props.item.image_url
+                  ? props.item.image_url
+                  : 'https://beerbods.co.uk/media/1197/brewdog-logo.jpg',
+              }}
               style={styles.image}
             />
           </View>

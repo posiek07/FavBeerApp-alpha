@@ -16,7 +16,14 @@ const ListItem = (props) => {
       }}>
       <View style={styles.container}>
         <View style={styles.imageWrapper}>
-          <Image source={{uri: props.item.image_url}} style={styles.image} />
+          <Image
+            source={{
+              uri: props.item.image_url
+                ? props.item.image_url
+                : 'https://beerbods.co.uk/media/1197/brewdog-logo.jpg',
+            }}
+            style={styles.image}
+          />
         </View>
         <View style={styles.descriptionWrapper}>
           <Text style={styles.title}>{props.item.name}</Text>
@@ -25,7 +32,7 @@ const ListItem = (props) => {
             <Rating
               imageSize={20}
               readonly
-              startingValue={listItem.rating}
+              startingValue={props.rating ? props.rating : null}
               style={styles.rating}
               ratingBackgroundColor="#d6d6d6"
             />

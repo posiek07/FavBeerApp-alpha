@@ -1,10 +1,10 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {StyleSheet, Text, View, ScrollView, Button} from 'react-native';
 import DetailRating from '../components/DetailRating';
 import DetailImages from '../components/DetailImages';
 import DetailReview from '../components/DetailReview';
 import {useSelector, useDispatch} from 'react-redux';
-import {updateRateFav} from '../store/actions/actions';
+import {fetchUserRating, updateRateFav} from '../store/actions/actions';
 import {sendReview} from '../store/actions/reviewActions';
 import Card from '../components/Card';
 import {uploadImage} from '../hooks/useFirabeStorage';
@@ -33,15 +33,12 @@ const RatingScreen = (props) => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploaded, setUploaded] = useState(false);
 
-  const setRatingHandler = useCallback((rating) => {
-    setRating(rating);
-    dispatch(
-      updateRateFav({
-        id: beerId,
-        rating: rating,
-      }),
-    );
-  }, []);
+  const setRatingHandler = useCallback(
+    (rating) => {
+      setRating(rating);
+    },
+    [setRating, beerId],
+  );
 
   const setImagesHandler = useCallback((images) => {
     setImages(images);
@@ -79,10 +76,19 @@ const RatingScreen = (props) => {
       images: webUrls ? webUrls : null,
     };
     dispatch(sendReview(review));
+    dispatch(
+      updateRateFav({
+        id: beerId,
+        rating: rating,
+      }),
+    );
     setIsUploading(false);
     setUploaded(true);
-    console.log(review);
   };
+
+  useEffect(() => {
+    // dispatch(fetchUserRating());
+  }, []);
 
   return (
     <ScrollView>
@@ -90,7 +96,7 @@ const RatingScreen = (props) => {
         <Text style={styles.name}>{beerName}</Text>
         <DetailRating
           setRating={setRatingHandler}
-          rating={rating}
+          rating={rating ? rating : {taste: null, foam: null, recipe: null}}
           beerName={beerName}
         />
         {isUploading ? (
@@ -126,6 +132,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
     padding: 8,
+    width: '80%',
   },
   reviewImagesContainer: {
     width: '80%',
@@ -148,5 +155,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 });
+
+RatingScreen.navigationOptions = (navigationData) => {
+  return {
+    // headerTitle: beerTitle,
+    headerTintColor: 'black',
+    headerTransparent: true,
+    headerStyle: {backgroundColor: '#fcfcfc'},
+  };
+};
 
 export default RatingScreen;

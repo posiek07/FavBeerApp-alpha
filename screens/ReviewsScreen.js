@@ -5,7 +5,6 @@ import {
   Text,
   View,
   FlatList,
-  ScrollView,
   ActivityIndicator,
 } from 'react-native';
 import {fetchReviews} from '../store/actions/reviewActions';
@@ -26,8 +25,6 @@ const ReviewsScreen = (props) => {
     dispatch(fetchReviews(beerId));
   }, []);
 
-  console.log(beerId);
-  console.log(reviews);
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -75,11 +72,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
     padding: 8,
+    width: '80%',
   },
   reviewTitle: {
     width: '100%',
     backgroundColor: Colors.accent,
     borderBottomEndRadius: 30,
     borderBottomStartRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

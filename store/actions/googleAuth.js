@@ -17,7 +17,6 @@ GoogleSignin.configure({
   offlineAccess: true,
   scopes: [
     'https://www.googleapis.com/auth/userinfo.email',
-    'https://www.googleapis.com/auth/firebase.database',
   ],
   returnSecureToken: true,
 });

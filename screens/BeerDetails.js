@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import DefaultText from '../components/DefaultText';
 import {Rating} from 'react-native-elements';
 import {updateRateFav} from '../store/actions/actions';
+import {fetchRating, fetchRatingsScreen} from '../store/actions/reviewActions';
 import Card from '../components/Card';
 // import Animated from 'react-native-reanimated';
 
@@ -24,6 +25,8 @@ const BeerDetails = (props) => {
 
   const avalibleBeers = useSelector((state) => state.beers.beers);
   const rateFavBeers = useSelector((state) => state.beers.beersFavRate);
+  const rateAvg = useSelector((state) => state.reviews.rating);
+  const loading = useSelector((state) => state.reviews.loading);
 
   const beerId = props.navigation.getParam('beerId');
 
@@ -31,30 +34,15 @@ const BeerDetails = (props) => {
 
   const selectedFavRate = rateFavBeers.find((object) => object.id === beerId);
 
-  const [rating, setRating] = useState(
-    selectedFavRate ? selectedFavRate.rating : null,
-  );
-
   const [favorite, setFavorite] = useState(
     selectedFavRate ? selectedFavRate.favorite : null,
   );
-
   const toggleBeerFav = (status) => {
     setFavorite((prevState) => !prevState);
     dispatch(
       updateRateFav({
         id: selectedBeer.id,
         favorite: status,
-      }),
-    );
-  };
-
-  const toggleBeerRate = (score) => {
-    setRating(score);
-    dispatch(
-      updateRateFav({
-        id: selectedBeer.id,
-        rating: score,
       }),
     );
   };
@@ -88,6 +76,10 @@ const BeerDetails = (props) => {
     });
   };
 
+  useEffect(() => {
+    dispatch(fetchRating(beerId));
+  }, [dispatch, beerId]);
+
   // const AnimatedIcon = Animated.createAnimatedComponent(Icon);
   // const currentValue = new Animated.Value(1);
   // useEffect(() => {
@@ -102,23 +94,34 @@ const BeerDetails = (props) => {
     <View style={styles.layout}>
       <View style={styles.container}>
         <View style={styles.imageWrapper}>
-          <Image source={{uri: selectedBeer.image_url}} style={styles.image} />
+          <Image
+            source={{
+              uri: selectedBeer.image_url
+                ? selectedBeer.image_url
+                : 'https://beerbods.co.uk/media/1197/brewdog-logo.jpg',
+            }}
+            style={styles.image}
+          />
         </View>
 
         <View style={styles.descriptionWrapper}>
           <ScrollView>
             <Text style={styles.name}>{selectedBeer.name}</Text>
             <Text style={styles.tagline}>"{selectedBeer.tagline}"</Text>
-            <View>
-              <Rating
-                showRating
-                onFinishRating={(score) => toggleBeerRate(score)}
-                fractions={1}
-                startingValue={rating}
-                ratingBackgroundColor="#fcfcfc"
-                type="custom"
-              />
-            </View>
+            {!loading ? (
+              <View>
+                <DefaultText style={styles.bigDetailsTitle}>
+                  Community rating:
+                </DefaultText>
+                <Rating
+                  readonly
+                  fractions={1}
+                  startingValue={rateAvg}
+                  ratingBackgroundColor="#fcfcfc"
+                  type="custom"
+                />
+              </View>
+            ) : null}
             <DefaultText style={styles.bigDetailsTitle}>ABV:</DefaultText>
             <Text style={styles.bigDetailsValue}>
               <Icon

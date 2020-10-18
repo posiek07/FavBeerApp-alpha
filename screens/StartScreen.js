@@ -27,7 +27,6 @@ const StartupScreen = (props) => {
           } else {
             return
           }
-          console.log(photoURL)
           dispatch(authActions.authenticate(email, uid, token, photoURL, authClient));
           props.navigation.navigate('Beers', {
             routeName: 'AllBeers',

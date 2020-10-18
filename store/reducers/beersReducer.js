@@ -14,6 +14,10 @@ const initialState = {
   ],
 };
 
+const fetchUserRatingSuccess = (state, action) => {
+  return updateObject(state, {beerFavRate: action.beerFavRate});
+};
+
 const fetchBeersStart = (state, action) => {
   return updateObject(state, {loading: true});
 };
@@ -39,6 +43,8 @@ const reducer = (state = initialState, action) => {
       return fetchBeersSuccess(state, action);
     case actionTypes.FETCH_BEERS_FAIL:
       return fetchBeersFail(state, action);
+    case actionTypes.FETCH_USER_RATING_SUCCESS:
+      return fetchUserRatingSuccess(state, action);
     case actionTypes.SET_FILTERS:
       const appliedFilters = action.filters;
       const filteredBeers = state.beers.filter((beer) => {

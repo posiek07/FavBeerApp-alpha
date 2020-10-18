@@ -36,8 +36,8 @@ export const updateRateFav = (beerFavRate) => {
 
     //Function to recognise which one is the normal email(only numbers) registration and which thru social API
     isFinite(userId)
-      ? (firebaseFavRateUrl = `https://favbeerapp.firebaseio.com/favrate/${userId}/userchoice/${beerFavRate.id}.json?access_token=${token}`)
-      : (firebaseFavRateUrl = `https://favbeerapp.firebaseio.com/favrate/${userId}/userchoice/${beerFavRate.id}.json?auth=${token}`);
+      ? (firebaseFavRateUrl = `https://favbeerapp.firebaseio.com/favrate/${userId}/${beerFavRate.id}.json?access_token=${token}`)
+      : (firebaseFavRateUrl = `https://favbeerapp.firebaseio.com/favrate/${userId}/${beerFavRate.id}.json?auth=${token}`);
 
     const response = await fetch(firebaseFavRateUrl, {
       method: 'PATCH',
@@ -58,13 +58,31 @@ export const updateRateFav = (beerFavRate) => {
       id: beerFavRate.id,
       favorite:
         beerFavRate.favorite !== 'undefined' ? beerFavRate.favorite : null,
-      rating: beerFavRate.rating !== 'undefinded' ? beerFavRate.rating : null,
+      // rating: beerFavRate.rating !== 'undefinded' ? beerFavRate.rating : null,
     };
 
     dispatch({
       type: actionTypes.TOGGLE_FAVORITE,
       beerFavRate: updatedBeerFavRate,
     });
+  };
+};
+
+export const fetchUserRating = () => {
+  return (dispatch, getState) => {
+    const userId = getState().auth.userId;
+    (async () => {
+      const [res] = await Promise.all([
+        axios.get(`https://favbeerapp.firebaseio.com/favrate/${userId}.json`),
+      ]).catch((error) => {
+      });
+
+
+      dispatch({
+        type: actionTypes.FETCH_USER_RATING_SUCCESS,
+        beerFavRate: res.data,
+      });
+    })();
   };
 };
 
@@ -101,12 +119,12 @@ export const fetchData = () => {
         await sleep(1100),
         axios.get('https://api.punkapi.com/v2/beers?page=5&per_page=80'),
         await sleep(1100),
-        axios.get(
-          `https://favbeerapp.firebaseio.com/favrate/${userId}/userchoice.json`,
-        ),
+        axios.get(`https://favbeerapp.firebaseio.com/favrate/${userId}.json`),
       ]).catch((error) => {
-        console.log(error);
       });
+
+      // Object.keys(res12.data).map(rating => rating.foam)
+
 
       const favRate = res6.data;
 
@@ -129,6 +147,7 @@ export const fetchData = () => {
         }
         return 0;
       });
+
 
       const fetchedData = {
         beers: fetchedBeers,

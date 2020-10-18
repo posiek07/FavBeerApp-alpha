@@ -83,7 +83,7 @@ const AuthScreen = (props) => {
     setError(null);
     setIsLoading(true);
     try {
-      if (formState.inputValues.password !== formState.inputValues.confirmPass) {
+      if (isSignUp && formState.inputValues.password !== formState.inputValues.confirmPass) {
         setError(`Password doasn't match to confirmed password. Please try again`)
         setIsLoading(false)
         return
