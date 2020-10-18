@@ -26,7 +26,6 @@ const DetailImages = (props) => {
   };
 
   const pickImageHandler = () => {
-    console.log('picking');
     ImagePicker.showImagePicker(options, saveImageHandler);
   };
 

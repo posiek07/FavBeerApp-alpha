@@ -1,31 +1,54 @@
-import React, {useEffect, useCallback} from 'react';
-import {SafeAreaView, useWindowDimensions} from 'react-native';
+import React, {useEffect, useCallback, useState} from 'react';
+import {
+  SafeAreaView,
+  View,
+  useWindowDimensions,
+  FlatList,
+  StyleSheet,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import * as actions from '../store/actions/actions';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import CustomHeaderButton from '../components/CustomHeaderButton';
-import {FlatList} from 'react-native-gesture-handler';
 import ListItem from '../components/ListItem/ListItem';
-import { NavigationActions } from 'react-navigation';
+import {NavigationActions} from 'react-navigation';
+import DefaultText from '../components/DefaultText';
+import {fetchRatingsScreen} from '../store/actions/reviewActions';
+import {ButtonGroup} from 'react-native-elements';
 
-
+const buttons = ['Foam', 'Taste', 'Recipe'];
 
 const RatedBeers = (props) => {
+  useEffect(() => {
+    dispatch(fetchRatingsScreen());
+  }, [dispatch, fetchRatingsScreen]);
+
+  const [index, setIndex] = useState(1);
+
   const beers = useSelector((state) => state.beers.beers);
-  const dispatch = useDispatch();
+  const ratings = useSelector((state) => state.reviews.ratings);
 
-  const beersFavRate = useSelector((state) => state.beers.beersFavRate);
-
-  const ratedBeers = [];
-
-  for (let i = 0; i < beersFavRate.length; i++) {
-    ratedBeers.push({
-      ...beersFavRate[i],
-      ...beers.find((beer) => beer.id === beersFavRate[i].id),
+  const newRatedBeers = [];
+  for (let i = 0; i < ratings.length; i++) {
+    newRatedBeers.push({
+      ...ratings[i],
+      ...beers.find((beer) => beer.id == ratings[i].id),
     });
   }
 
-  ratedBeers.sort((a, b) => b.rating - a.rating);
+  let sorting;
+
+  if (index === 0) {
+    newRatedBeers.sort((a, b) => b.foam - a.foam);
+  } else if (index === 1) {
+    newRatedBeers.sort((a, b) => b.taste - a.taste);
+  } else {
+    newRatedBeers.sort((a, b) => b.recipe - a.recipe);
+  }
+
+  // const [sortedRatings, setSortedRatings] = useState(newRatedBeers);
+
+  const dispatch = useDispatch();
+
 
   const navigationDetails = (id, name) => {
     props.navigation.navigate({
@@ -49,20 +72,41 @@ const RatedBeers = (props) => {
 
   return (
     <>
-      <SafeAreaView>
+      <SafeAreaView style={{flex: 1}}>
+        <View>
+          <DefaultText style={styles.header}>
+            Brew Your Dog Brewers Ranking
+          </DefaultText>
+          <ButtonGroup
+            onPress={setIndex}
+            selectedIndex={index}
+            buttons={buttons}
+            containerStyle={{height: 50}}
+          />
+        </View>
         <FlatList
           style={{margin: 3}}
-          data={ratedBeers}
+          data={newRatedBeers}
           numColumns={1}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={(itemData) => (
-            <ListItem
-              navigation={() =>
-                navigateToBeerDetails(itemData.item.id, itemData.item.name)
-              }
-              item={itemData.item}
-            />
-          )}
+          renderItem={(itemData) => {
+            if (index === 0) {
+              sorting = itemData.item.foam;
+            } else if (index === 1) {
+              sorting = itemData.item.taste;
+            } else {
+              sorting = itemData.item.recipe;
+            }
+            return (
+              <ListItem
+                navigation={() =>
+                  navigateToBeerDetails(itemData.item.id, itemData.item.name)
+                }
+                item={itemData.item}
+                rating={sorting}
+              />
+            );
+          }}
           initialNumToRender={2}
         />
       </SafeAreaView>
@@ -70,15 +114,26 @@ const RatedBeers = (props) => {
   );
 };
 
+const styles = StyleSheet.create({
+  header: {
+    fontFamily: 'Frijole-Regular',
+    fontWeight: 'normal',
+    fontSize: 24,
+    textAlign: 'center',
+    padding: 8,
+    width: '100%',
+  },
+});
+
 RatedBeers.navigationOptions = (navData) => {
   return {
-    headerTitle: null,
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
         <Item
           title="Menu"
           iconName="menu-outline"
           color="black"
+          iconSize={30}
           onPress={() => {
             navData.navigation.toggleDrawer();
           }}

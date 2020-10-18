@@ -48,9 +48,7 @@ const ReviewItem = (props) => {
     setModalOpen(true);
   };
 
-  console.log(images);
 
-  console.log(props.rating);
   return (
     <View style={styles.reviewItemContainer}>
       <Card style={styles.reviewItemCardContainer}>
@@ -65,7 +63,7 @@ const ReviewItem = (props) => {
                 <View style={styles.starsContanier}>
                   <DefaultText style={styles.starTitle}>Recipe: </DefaultText>
                   <Rating
-                    startingValue={props.rating.taste}
+                    startingValue={props.rating.recipe}
                     ratingBackgroundColor="#fcfcfc"
                     type="star"
                     imageSize={15}
@@ -85,7 +83,7 @@ const ReviewItem = (props) => {
                 <View style={styles.starsContanier}>
                   <DefaultText style={styles.starTitle}>Foam: </DefaultText>
                   <Rating
-                    startingValue={props.rating.taste}
+                    startingValue={props.rating.foam}
                     ratingBackgroundColor="#fcfcfc"
                     type="star"
                     imageSize={15}
@@ -188,6 +186,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: 14,
     color: Colors.primary,
+    width: '100%',
   },
   imageDetailContainer: {
     height: 80,

@@ -1,14 +1,14 @@
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
+import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
 import {
   createDrawerNavigator,
   DrawerNavigatorItems,
 } from 'react-navigation-drawer';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import * as authActions from '../store/actions/emailAuth';
 
-import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 import MainScreen from '../screens/MainScreen';
 import BeerDetails from '../screens/BeerDetails';
 import {
@@ -29,12 +29,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AuthScreen from '../screens/AuthScreen';
 import StartupScreen from '../screens/StartScreen';
 import BeerIngredients from '../screens/BeerIngredients';
-import { googleLogout } from '../store/actions/googleAuth';
-import { facebookLogout } from '../store/actions/facebookAuth';
+import {googleLogout} from '../store/actions/googleAuth';
+import {facebookLogout} from '../store/actions/facebookAuth';
 import ProfileImagePicker from '../components/ProfileImagePicker';
 import RatingScreen from '../screens/RatingScreen';
 import ReviewsScreen from '../screens/ReviewsScreen';
-
+import DefaultText from '../components/DefaultText';
 
 const defaultNavOptions = {
   headerTitle: null,
@@ -69,66 +69,66 @@ const RateNavigator = createStackNavigator(
 );
 
 const tabScreenConfig = {
-  Beers: {
-    screen: BeersNavigator,
-    navigationOptions: {
-      tabBarIcon: () => {
-        return (
-          <Icon title="Menu" name="beer-outline" color="white" size={25} />
-        );
-      },
-      tabBarColor: Colors.primary,
-      tabBarLabel:
-        Platform.OS === 'android' ? (
-          <Text style={{ fontFamily: 'open-sans-bold' }}>Bears</Text>
-        ) : (
+    Beers: {
+      screen: BeersNavigator,
+      navigationOptions: {
+        tabBarIcon: () => {
+          return (
+            <Icon title="Menu" name="beer-outline" color="white" size={25} />
+          );
+        },
+        tabBarColor: Colors.primary,
+        tabBarLabel:
+          Platform.OS === 'android' ? (
+            <Text style={{fontFamily: 'open-sans-bold'}}>Bears</Text>
+          ) : (
             'Beers'
           ),
-    },
-  },
-  RatedBeers: {
-    screen: RateNavigator,
-    navigationOptions: {
-      tabBarIcon: () => {
-        return (
-          <Icon title="Menu" name="star-outline" color="white" size={25} />
-        );
       },
-      tabBarColor: Colors.accent,
-      tabBarLabel:
-        Platform.OS === 'android' ? (
-          <Text style={{ fontFamily: 'open-sans-bold' }}>Rated Beers</Text>
-        ) : (
-            'Rated Beers'
+    },
+    RatedBeers: {
+      screen: RateNavigator,
+      navigationOptions: {
+        tabBarIcon: () => {
+          return (
+            <Icon title="Menu" name="star-outline" color="white" size={25} />
+          );
+        },
+        tabBarColor: Colors.accent,
+        tabBarLabel:
+          Platform.OS === 'android' ? (
+            <Text style={{fontFamily: 'open-sans-bold'}}>Brewers Ranking</Text>
+          ) : (
+            'Brewers Ranking'
           ),
+      },
     },
   },
-},
   BottomNavigator =
     Platform.OS === 'android'
       ? createMaterialBottomTabNavigator(tabScreenConfig, {
-        activeColor: 'white',
-        shifting: true,
-        navigationOptions: {
-          drawerLabel: 'Brewdog Collection',
-          drawerIcon: (drawerConfig) => (
-            <Icon
-              title="Menu"
-              name="beer-outline"
-              color={Colors.primary}
-              size={25}
-            />
-          ),
-        },
-      })
-      : createBottomTabNavigator(tabScreenConfig, {
-        tabBarOptions: {
-          labelStyle: {
-            fontFamily: 'open-sans-bold',
+          activeColor: 'white',
+          shifting: true,
+          navigationOptions: {
+            drawerLabel: 'Brewdog Collection',
+            drawerIcon: (drawerConfig) => (
+              <Icon
+                title="Menu"
+                name="beer-outline"
+                color={Colors.primary}
+                size={25}
+              />
+            ),
           },
-          activeTintColor: Colors.accent,
-        },
-      });
+        })
+      : createBottomTabNavigator(tabScreenConfig, {
+          tabBarOptions: {
+            labelStyle: {
+              fontFamily: 'open-sans-bold',
+            },
+            activeTintColor: Colors.accent,
+          },
+        });
 
 const FavouritesNavigator = createStackNavigator(
   {
@@ -160,7 +160,6 @@ const AuthNavigator = createStackNavigator(
   },
 );
 
-
 const MainNavigator = createDrawerNavigator(
   {
     Beers: BottomNavigator,
@@ -177,31 +176,38 @@ const MainNavigator = createDrawerNavigator(
     },
     contentComponent: (props) => {
       const dispatch = useDispatch();
-      const authClient = useSelector(state => state.auth.authClient)
-      console.log('authClient:' + authClient)
+      const authClient = useSelector((state) => state.auth.authClien);
       return (
-        <View style={{ flex: 1, padding: 30, alignItems: 'center' }}>
+        <View style={{flex: 1, padding: 30, alignItems: 'center'}}>
           <ProfileImagePicker />
           <SafeAreaView
-            forceInset={{ top: 'always', horizontal: 'never' }}
+            forceInset={{top: 'always', horizontal: 'never'}}
             style={{
               height: '100%',
               flexDirection: 'column',
-              justifyContent: 'space-between',
+              justifyContent: 'flex-start',
             }}>
             <DrawerNavigatorItems {...props} />
+            <DefaultText
+              style={{
+                fontFamily: 'Frijole-Regular',
+                fontWeight: 'normal',
+                fontSize: 13,
+                textAlign: 'center',
+                width: '100%',
+              }}>
+              Made by Daniel Smolinski
+            </DefaultText>
+
             <Button
               title="Logout"
               color={Colors.primary}
               onPress={() => {
                 if (authClient === 'facebookSignIn') {
-                  console.log('facebook sign out')
                   dispatch(facebookLogout());
                 } else if (authClient === 'googleSignIn') {
-                  console.log('google sign out')
                   dispatch(googleLogout());
                 } else {
-                  console.log('email sign out')
                   dispatch(authActions.logout());
                 }
               }}
@@ -210,13 +216,12 @@ const MainNavigator = createDrawerNavigator(
               source={require('../assets/image/drawerImage.png')}
               style={{
                 bottom: 50,
-                position: 'relative',
-                alignSelf: 'baseline',
+                position: 'absolute',
+                alignSelf: 'flex-end',
                 height: '40%',
-                width: 200,
+                width: 150,
                 opacity: 0.6,
                 left: 20,
-                top: 20,
               }}
             />
           </SafeAreaView>

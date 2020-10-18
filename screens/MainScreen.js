@@ -1,8 +1,15 @@
-import React, { useEffect, useCallback, Fragment, useState, useRef } from 'react';
-import { SafeAreaView, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity, Animated } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
+import React, {useEffect, useCallback, Fragment, useState, useRef} from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  ActivityIndicator,
+  FlatList,
+  TouchableOpacity,
+  Animated,
+} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '../store/actions/actions';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import CustomHeaderButton from '../components/CustomHeaderButton';
 // import { FlatList } from 'react-native-gesture-handler';
 import BeerHeader from '../components/BeerHeader';
@@ -17,13 +24,11 @@ const mainScreen = (props) => {
   const fetchData = () => {
     dispatch(actions.fetchData());
   };
-  const [flatlistRef, setFlatlistRef] = useState()
-
+  const [flatlistRef, setFlatlistRef] = useState();
 
   useEffect(() => {
     fetchData();
   }, []);
-  console.log(loading);
 
   const navigationDetails = (id, name) =>
     props.navigation.navigate({
@@ -42,7 +47,6 @@ const mainScreen = (props) => {
   );
 
   // let animation = new Animated.Value(0)
-
 
   // const interpolated = animation.interpolate({
   //   inputRange: [0, 0.5, 1, 1.5, 2, 2.5, 3],
@@ -64,16 +68,14 @@ const mainScreen = (props) => {
   //   }).start()
   // }
 
-
   const shakeButton = () => {
     // triggerAnimation()
-    flatlistRef.scrollToOffset({ animated: true, offset: 0 })
-  }
-
+    flatlistRef.scrollToOffset({animated: true, offset: 0});
+  };
 
   return (
     <>
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{flex: 1}}>
         {loading ? (
           <ActivityIndicator
             size="large"
@@ -81,38 +83,39 @@ const mainScreen = (props) => {
             style={styles.centered}
           />
         ) : (
-            <Fragment>
-              <FlatList
-                ref={ref => setFlatlistRef(ref)}
-                ListHeaderComponent={BeerHeader}
-                style={{ margin: 3 }}
-                data={beers}
-                numColumns={2}
-                keyExtractor={(item) => item.id}
-                renderItem={(itemData) => (
-                  <CardItem
-                    navigation={() =>
-                      navigateToBeerDetails(itemData.item.id, itemData.item.name)
-                    }
-                    item={itemData.item}
-                  />
-                )}
-                initialNumToRender={2}
-                columnWrapperStyle={styles.columnWrapper}
-              />
-              {/* <Animated.View style={style, styles.button} > */}
+          <Fragment>
+            <FlatList
+              ref={(ref) => setFlatlistRef(ref)}
+              ListHeaderComponent={BeerHeader}
+              style={{margin: 3}}
+              data={beers}
+              numColumns={2}
+              windowSize={5}
+              keyExtractor={(item) => item.id}
+              renderItem={(itemData) => (
+                <CardItem
+                  navigation={() =>
+                    navigateToBeerDetails(itemData.item.id, itemData.item.name)
+                  }
+                  item={itemData.item}
+                />
+              )}
+              initialNumToRender={2}
+              columnWrapperStyle={styles.columnWrapper}
+            />
+            {/* <Animated.View style={style, styles.button} > */}
 
-              <Icon
-                title="rating"
-                name="chevron-up-circle-outline"
-                color="black"
-                size={40}
-                style={styles.floatingHeartStyle}
-                onPress={() => shakeButton()}
-              />
-              {/* </Animated.View> */}
-            </Fragment>
-          )}
+            <Icon
+              title="rating"
+              name="chevron-up-circle-outline"
+              color="black"
+              size={40}
+              style={styles.floatingHeartStyle}
+              onPress={() => shakeButton()}
+            />
+            {/* </Animated.View> */}
+          </Fragment>
+        )}
       </SafeAreaView>
     </>
   );
@@ -127,6 +130,7 @@ mainScreen.navigationOptions = (navData) => {
           title="Menu"
           iconName="menu-outline"
           color="black"
+          iconSize={30}
           onPress={() => {
             navData.navigation.toggleDrawer();
           }}

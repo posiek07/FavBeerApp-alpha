@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, Button } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { Avatar, Accessory } from 'react-native-elements';
 import { useSelector } from 'react-redux';
+import Colors from '../constants/Colors';
 
 
 const ProfileImagePicker = () => {
@@ -31,11 +32,9 @@ const ProfileImagePicker = () => {
 
   const saveImageHandler = (response) => {
     if (response.error) {
-      console.log('image error');
     } else {
-      console.log('Image: ' + response.uri);
       setSelectedImage({ uri: response.uri });
-      //   onImagePicked({uri: response.uri});
+      // onImagePicked({uri: response.uri});
     }
   };
 
@@ -43,7 +42,8 @@ const ProfileImagePicker = () => {
     <Fragment>
       <View style={styles.imageContainer}>
         <Avatar
-          onPress={pickImageHandler}
+          // onPress={pickImageHandler}
+          containerStyle={{ borderWidth: 5, borderColor: Colors.accent }}
           rounded
           size="large"
           source={selectedImage}>

@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {Rating} from 'react-native-ratings';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Rating } from 'react-native-ratings';
 import DefaultText from './DefaultText';
 import Card from './Card';
 
 const DetailRating = (props) => {
-  const {setRating} = props;
-  const {rating} = props;
+  const { setRating } = props;
+  const { rating } = props;
   const [recipeRating, setRecipeRating] = useState(
     rating.recipe ? rating.recipe : null,
   );
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 30,
   },
-  header: {alignItems: 'center'},
+  header: { alignItems: 'center' },
   headerText: {
     textAlign: 'center',
     fontFamily: 'Roboto-Bold',
