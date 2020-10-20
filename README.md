@@ -5,6 +5,10 @@
 
 > Do you like BrewDog Brewery beers? Here is a app where you can tag and rate recipes for your favorite beers.
 
+> PLAY STORE: 
+<br/><<a href="https://play.google.com/store/apps/details?id=com.favbeerapp" target="_blank">BREW YOUR DOG - PLAYSTORE</a>
+
+
 > React Native app builded with Punk API and Firebase with Authorisation, Photos, Comments and Ranking.
 
 <br/><<a href="https://postimg.cc/2bhBVsqR" target="_blank"><img src="https://i.postimg.cc/2bhBVsqR/118376216-342276040291047-2290637765414475495-n.jpg" alt="118376216-342276040291047-2290637765414475495-n"/></a>
